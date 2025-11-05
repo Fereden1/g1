@@ -1,12 +1,16 @@
 package org.example.websiteenglish.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
 import org.example.websiteenglish.entity.User;
 import org.example.websiteenglish.service.UserService;
 import org.example.websiteenglish.service.impl.UserServiceImpl;
 import org.example.websiteenglish.utils.PasswordUtil;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 import java.io.IOException;
@@ -22,7 +26,7 @@ public class ProfileServlet extends HttpServlet {
 
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userEmail") == null) {
-            resp.sendRedirect("login.jsp");
+            resp.sendRedirect("login.ftl");
             return;
         }
 
@@ -33,17 +37,17 @@ public class ProfileServlet extends HttpServlet {
         switch (path) {
             case "/profile":
                 req.setAttribute("user", user);
-                req.getRequestDispatcher("profile.jsp").forward(req, resp);
+                req.getRequestDispatcher("profile.ftl").forward(req, resp);
                 break;
             case "/profile/edit":
                 req.setAttribute("user", user);
-                req.getRequestDispatcher("/editProfile.jsp").forward(req, resp);
+                req.getRequestDispatcher("/editProfile.ftl").forward(req, resp);
                 break;
 
             case "/profile/delete":
                 userService.deleteUser(user.getId());
                 session.invalidate();
-                resp.sendRedirect("index.jsp");
+                resp.sendRedirect("index.ftl");
                 break;
         }
     }
@@ -54,7 +58,7 @@ public class ProfileServlet extends HttpServlet {
 
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userEmail") == null) {
-            resp.sendRedirect("login.jsp");
+            resp.sendRedirect("login.ftl");
             return;
         }
 
@@ -63,7 +67,7 @@ public class ProfileServlet extends HttpServlet {
         User user = userService.getByEmail(email);
 
         req.setAttribute("user", user);
-        req.getRequestDispatcher("/profile.jsp").forward(req, resp);
+        req.getRequestDispatcher("/profile.ftl").forward(req, resp);
 
         User currentUser = userService.getByEmail(email);
 
@@ -81,7 +85,7 @@ public class ProfileServlet extends HttpServlet {
 
         // вместо редиректа — forward на профиль
         req.setAttribute("user", currentUser);
-        req.getRequestDispatcher("/profile.jsp").forward(req, resp);
+        req.getRequestDispatcher("/profile.ftl").forward(req, resp);
     }
 
 

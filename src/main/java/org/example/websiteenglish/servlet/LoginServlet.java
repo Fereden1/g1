@@ -1,8 +1,8 @@
 package org.example.websiteenglish.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 import java.io.IOException;
 import org.example.websiteenglish.service.UserService;
 import org.example.websiteenglish.service.impl.UserServiceImpl;
@@ -14,7 +14,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        req.getRequestDispatcher("/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/login.ftl").forward(req, resp);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
             req.setAttribute("error", "Введите email и пароль");
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("/login.ftl").forward(req, resp);
             return;
         }
 
@@ -38,10 +38,10 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userRole", user.getRole());
             session.setMaxInactiveInterval(60 * 60);
 
-            resp.sendRedirect(req.getContextPath() + "/index.jsp");
+            resp.sendRedirect(req.getContextPath() + "/index.ftl");
         } else {
             req.setAttribute("error", "Неверный email или пароль");
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            req.getRequestDispatcher("/login.ftl").forward(req, resp);
         }
     }
 }

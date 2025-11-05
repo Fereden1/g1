@@ -1,8 +1,8 @@
 package org.example.websiteenglish.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 import org.example.websiteenglish.entity.Application;
 import org.example.websiteenglish.service.ApplicationService;
 import org.example.websiteenglish.service.impl.ApplicationServiceImpl;
@@ -21,7 +21,7 @@ public class ApplicationServlet extends HttpServlet {
         // Проверка сессии
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
-            resp.sendRedirect("login.jsp"); // если нет сессии, перенаправляем на логин
+            resp.sendRedirect("login.ftl"); // если нет сессии, перенаправляем на логин
             return;
         }
 
@@ -38,7 +38,7 @@ public class ApplicationServlet extends HttpServlet {
         try {
             // Сохраняем в базу
             applicationService.save(application);
-            resp.sendRedirect("profile.jsp"); // после успешной отправки
+            resp.sendRedirect("profile.ftl"); // после успешной отправки
         } catch (Exception ex) {
             ex.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Ошибка при сохранении заявки.");

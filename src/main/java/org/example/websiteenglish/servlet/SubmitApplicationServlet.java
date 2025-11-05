@@ -1,8 +1,8 @@
 package org.example.websiteenglish.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 import org.example.websiteenglish.dao.impl.ApplicationDaoImpl;
 import org.example.websiteenglish.entity.Application;
 
@@ -51,6 +51,6 @@ public class SubmitApplicationServlet extends HttpServlet {
 
         applicationDao.save(app);
 
-        resp.sendRedirect("index.jsp");
+        resp.sendRedirect("index.ftl");
     }
 }

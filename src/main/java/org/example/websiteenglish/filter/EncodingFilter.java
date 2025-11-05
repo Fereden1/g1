@@ -1,18 +1,30 @@
 package org.example.websiteenglish.filter;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
+import javax.servlet.*;
 import java.io.IOException;
 
-@WebFilter("/*")
 public class EncodingFilter implements Filter {
+    private String encoding = "UTF-8";
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        request.setCharacterEncoding("UTF-8");
+    public void init(FilterConfig filterConfig) throws ServletException {
+        String encodingParam = filterConfig.getInitParameter("encoding");
+        if (encodingParam != null) {
+            encoding = encodingParam;
+        }
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+                         FilterChain chain) throws IOException, ServletException {
+        request.setCharacterEncoding(encoding);
+        response.setCharacterEncoding(encoding);
+        response.setContentType("text/html; charset=" + encoding);
         chain.doFilter(request, response);
+    }
+
+    @Override
+    public void destroy() {
+        // cleanup
     }
 }
